@@ -64,9 +64,10 @@ def couverture_minimale(matrice):
     """Retourne le nombre minimal de carrés nécessaires pour couvrir toutes les cases vides de la matrice, et affiche la matrice finale remplie."""
     meilleur_resultat = float('inf')
     meilleure_matrice = None
+    compteur_essais = 0  # Initialiser le compteur d'essais
     
     def recherche_minimum(matrice, x, y, largeur, hauteur, couverture_actuelle, indice):
-        nonlocal meilleur_resultat, meilleure_matrice
+        nonlocal meilleur_resultat, meilleure_matrice, compteur_essais
         
         if couverture_actuelle >= meilleur_resultat:
             return  # Arrêter si le nombre de carrés dépasse déjà le meilleur résultat trouvé
@@ -83,6 +84,7 @@ def couverture_minimale(matrice):
                 if matrice[i][j] == 0:
                     # Essayer de placer des carrés de taille décroissante
                     for taille in range(min(largeur - j, hauteur - i), 0, -1):
+                        compteur_essais += 1  # Incrémenter le compteur à chaque tentative
                         if est_valide(matrice, i, j, taille):
                             # Placer un carré avec un indice unique
                             placer_carre(matrice, i, j, taille, indice)
@@ -101,20 +103,20 @@ def couverture_minimale(matrice):
     recherche_minimum(matrice, 0, 0, largeur, hauteur, 0, indice_initial)
     fin = time.process_time()  # Temps CPU à la fin
 
-    
     # Après la recherche, afficher la matrice avec les indices des carrés
     print("\nMatrice remplie avec indices des carrés :")
     if meilleure_matrice:
         afficher_matrice(meilleure_matrice)
 
-    # Afficher le temps CPU
+    # Afficher le temps CPU et le nombre d'essais
     temps_cpu = fin - debut
     print(f"Temps CPU : {temps_cpu:.4f} secondes")
+    print(f"Nombre d'essais effectués : {compteur_essais}")
     
     return meilleur_resultat
 
 # Exemple d'appel avec un fichier lu précédemment
-fichier = "tests/s1.txt"
+fichier = "tests/s4.txt"
 largeur, hauteur, matrice = lire_instance(fichier)
 afficher_matrice(matrice)  # Afficher la matrice pour la visualiser
 
