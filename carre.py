@@ -1,3 +1,4 @@
+import time
 from colorama import Fore, Style, init
 
 # Initialisation pour gérer les couleurs dans la console
@@ -94,12 +95,21 @@ def couverture_minimale(matrice):
     
     largeur, hauteur = len(matrice[0]), len(matrice)
     indice_initial = 2  # On commence l'indice des carrés à 2, car 0 et 1 sont déjà utilisés
+
+    # Mesurer le temps d'exécution
+    debut = time.process_time()  # Temps CPU au début
     recherche_minimum(matrice, 0, 0, largeur, hauteur, 0, indice_initial)
+    fin = time.process_time()  # Temps CPU à la fin
+
     
     # Après la recherche, afficher la matrice avec les indices des carrés
     print("\nMatrice remplie avec indices des carrés :")
     if meilleure_matrice:
         afficher_matrice(meilleure_matrice)
+
+    # Afficher le temps CPU
+    temps_cpu = fin - debut
+    print(f"Temps CPU : {temps_cpu:.4f} secondes")
     
     return meilleur_resultat
 
